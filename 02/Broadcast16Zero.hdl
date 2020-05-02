@@ -1,0 +1,16 @@
+CHIP Broadcast16Zero {
+    IN  
+        in;  // 1-bit input      
+
+
+    OUT 
+        out[16]; // 16-bit output
+
+
+    PARTS:
+    // Put you code here:
+    Not(in=in, out=notin);
+    And(a=in, b=notin, out=zero);
+    DMux8Way(in=zero, sel[0]=zero, sel[1]=zero, sel[2]=zero, a=out[0], b=out[1], c=out[2], d=out[3], e=out[4], f=out[5], g=out[6], h=out[7]);
+    DMux8Way(in=zero, sel[0]=zero, sel[1]=zero, sel[2]=zero, a=out[8], b=out[9], c=out[10], d=out[11], e=out[12], f=out[13], g=out[14], h=out[15]);
+}

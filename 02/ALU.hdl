@@ -16,14 +16,14 @@
 
 // Implementation: the ALU logic manipulates the x and y inputs
 // and operates on the resulting values, as follows:
-// if (zx == 1) set x = 0        // 16-bit constant
-// if (nx == 1) set x = !x       // bitwise not
-// if (zy == 1) set y = 0        // 16-bit constant
-// if (ny == 1) set y = !y       // bitwise not
-// if (f == 1)  set out = x + y  // integer 2's complement addition
-// if (f == 0)  set out = x & y  // bitwise and
-// if (no == 1) set out = !out   // bitwise not
-// if (out == 0) set zr = 1
+// if (zx == 1) set x = 0        // 16-bit constant                         Add16(a=false, b=false, out=x0);
+// if (nx == 1) set x = !x       // bitwise not                             Not16(in=x, out=notx);
+// if (zy == 1) set y = 0        // 16-bit constant                         Add16(a=false, b=false, out=y0);
+// if (ny == 1) set y = !y       // bitwise not                             Not16(in=y, out=noty);
+// if (f == 1)  set out = x + y  // integer 2's complement addition         Add16(a=x, b=y, out=xPlusy);
+// if (f == 0)  set out = x & y  // bitwise and                             And16(a=x, b=y, out=xAndY);
+// if (no == 1) set out = !out   // bitwise not                             Not16(in=xPlusy or xAndY, out=out);
+// if (out == 0) set zr = 1                                                 
 // if (out < 0) set ng = 1
 
 CHIP ALU {
@@ -42,5 +42,9 @@ CHIP ALU {
         ng; // 1 if (out < 0),  0 otherwise
 
     PARTS:
-   // Put you code here:
+    // Put you code here:
+    // zx:
+    // zx -> zx16
+    
+    And(a=x, b=zx16, out=newx);
 }

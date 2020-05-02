@@ -1,0 +1,14 @@
+CHIP Broadcast16One {
+    IN  
+        in;  // 1-bit input      
+
+
+    OUT 
+        out[16]; // 16-bit output
+
+
+    PARTS:
+    // Put you code here:
+    Broadcast16Zero(in=in, out=p);
+    Not16(in=p, out=out);
+}

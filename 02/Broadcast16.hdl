@@ -1,0 +1,38 @@
+CHIP Broadcast16 {
+    IN  
+        in;  // 1-bit input      
+
+
+    OUT 
+        out[16]; // 16-bit output
+
+
+    PARTS:
+    Not(in=in, out=notin);
+    HalfAdder(a=notin, b=true, sum=out[0], carry=aq);
+    HalfAdder(a=notin, b=true, sum=out[1], carry=bq);
+    HalfAdder(a=notin, b=true, sum=out[2], carry=cq);
+    HalfAdder(a=notin, b=true, sum=out[3], carry=dq);
+    HalfAdder(a=notin, b=true, sum=out[4], carry=eq);
+    HalfAdder(a=notin, b=true, sum=out[5], carry=fq);
+    HalfAdder(a=notin, b=true, sum=out[6], carry=gq);
+    HalfAdder(a=notin, b=true, sum=out[7], carry=hq);
+    HalfAdder(a=notin, b=true, sum=out[8], carry=iq);
+    HalfAdder(a=notin, b=true, sum=out[9], carry=jq);
+    HalfAdder(a=notin, b=true, sum=out[10], carry=kq);
+    HalfAdder(a=notin, b=true, sum=out[11], carry=lq);
+    HalfAdder(a=notin, b=true, sum=out[12], carry=mq);
+    HalfAdder(a=notin, b=true, sum=out[13], carry=nq);
+    HalfAdder(a=notin, b=true, sum=out[14], carry=oq);
+    HalfAdder(a=notin, b=true, sum=out[15], carry=pq);
+
+
+    // Put you code here:
+    // Broadcast16Zero(in=in, out[0]=p);
+    // DMux(in=in, sel=in, a=q, b=out[0]);
+   //  DMux8Way(in=in, sel[0]=in, sel[1]=in, sel[2]=in, a=p[7], b=p[6], c=p[5], d=p[4], e=p[3], f=p[2], g=p[1], h=p[0]);
+   // DMux8Way(in=in, sel[0]=in, sel[1]=in, sel[2]=in, a=p[7], b=p[6], c=p[5], d=p[4], e=p[3], f=p[2], g=p[1], h=p[0]);
+   // DMux8Way(in=zero, sel[0]=zero, sel[1]=zero, sel[2]=zero, a=out[0], b=out[1], c=out[2], d=out[3], e=out[4], f=out[5], g=out[6], h=out[7]);
+   // DMux8Way(in=zero, sel[0]=zero, sel[1]=zero, sel[2]=zero, a=out[8], b=out[9], c=out[10], d=out[11], e=out[12], f=out[13], g=out[14], h=out[15]);
+   // Not16(in=out, out=out);
+}
