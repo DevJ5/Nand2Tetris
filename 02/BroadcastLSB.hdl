@@ -1,0 +1,17 @@
+// Mother of all chips, such beauty:
+
+CHIP BroadcastLSB {
+    IN  
+        in;  // 1-bit input      
+
+
+    OUT 
+        out[16]; // 16-bit output
+
+
+    PARTS:
+    // Put you code here:
+    DMux8Way(in=in, sel[0]=in, sel[1]=in, sel[2]=in, a=out[7], b=out[6], c=out[5], d=out[4], e=out[3], f=out[2], g=out[1], h=out[0]);
+    DMux8Way(in=false, sel[0]=in, sel[1]=in, sel[2]=in, a=out[8], b=out[9], c=out[10], d=out[11], e=out[12], f=out[13], g=out[14], h=out[15]);
+
+}

@@ -45,6 +45,7 @@ CHIP ALU {
     // Put you code here:
     // zx:
     // zx -> zx16
-    
-    And(a=x, b=zx16, out=newx);
+    Broadcast16(in=zx, out=zx16);
+
+
 }
