@@ -14,4 +14,16 @@ CHIP FullAdder {
 
     PARTS:
     // Put you code here:
+    // Carry:
+    And(a=a, b=b, out=aAndb);
+    And(a=a, b=c, out=aAndc);
+    And(a=b, b=c, out=bAndc);
+
+    Or(a=aAndb, b=aAndc, out=p);
+    Or(a=p, b=bAndc, out=carry);
+
+    // Sum:
+    Xor3Way(a=a, b=b, c=c, out=r);
+    And3Way(a=a, b=b, c=c, out=s);
+    Or(a=r, b=s, out=sum);
 }
