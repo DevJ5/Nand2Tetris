@@ -44,8 +44,46 @@ CHIP ALU {
     PARTS:
     // Put you code here:
     // zx:
-    // zx -> zx16
     Broadcast16(in=zx, out=zx16);
+    Not16(in=zx16, out=notzx16);
+    And16(a=x, b=notzx16, out=x1);
 
+    // nx:
+    Broadcast16(in=nx, out=nx16);
+    Xor16(a=x1, b=nx16, out=x2);
+
+    // zy:
+    Broadcast16(in=zy, out=zy16);
+    Not16(in=zy16, out=notzy16);
+    And16(a=y, b=notzy16, out=y1);
+
+    // ny:
+    Broadcast16(in=ny, out=ny16);
+    Xor16(a=y1, b=ny16, out=y2);
+
+    // f:
+    Broadcast16(in=f, out=f16);
+    Add16(a=x2, b=y2, out=xOry);
+    And16(a=xOry, b=f16, out=xOryAndf);
+
+    And16(a=x2, b=y2, out=xAndy);
+    Not16(in=f16, out=notf16);
+    And16(a=xAndy, b=notf16, out=xAndyAndNotf);
+
+    Or16(a=xOryAndf, b=xAndyAndNotf, out=f1);
+
+    // no:
+    Broadcast16(in=no, out=no16);
+    Xor16(a=f1, b=no16, out=rr);
+
+    // zr:
+    Not16(in=rr, out=qq);
+    Shrink16(in=qq, out=zr);
+    
+    // ng:
+    Add16(a=rr, b=false, out[15]=ng);
+
+    // out:
+    Add16(a=rr, b=false, out=out);
 
 }
