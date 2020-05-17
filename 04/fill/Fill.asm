@@ -11,4 +11,62 @@
 // "white" in every pixel;
 // the screen should remain fully clear as long as no key is pressed.
 
-// Put your code here.
+(RESTART)
+    @SCREEN // Address 16384
+    D = A
+    @startaddr // Set the start address (address of screen)
+    M = D
+    @KBD // Address 24576
+    D = A
+    @endaddr // Set the end address (address of keyboard)
+    M = D
+
+    @KBD
+    D = M
+    @DRAWBLACKLOOP // If keyboard is pressed jump to drawloop
+    D; JGT
+    @DRAWWHITELOOP // If keyboard is pressed jump to drawloop
+    D; JEQ
+
+(DRAWBLACKLOOP)
+    @KBD
+    D = M
+    @RESTART // If keyboard is not pressed jump back to restart
+    D; JEQ
+    @startaddr
+    A = M
+    M = -1 // Set register to black
+    @startaddr
+    M = M + 1 // increment startaddr
+    @endaddr
+    D = M
+    @startaddr
+    D = D - M
+    @RESTART // End the loop if start address has reached end address
+    D;JEQ
+    @DRAWBLACKLOOP
+    0; JMP // Go the beggining of drawloop
+    
+(DRAWWHITELOOP)
+    @KBD
+    D = M
+    @RESTART // If keyboard is pressed jump back to restart
+    D; JGT
+
+
+    @startaddr
+    A = M
+    M = 0 // Set register to white
+
+    @startaddr
+    M = M + 1 // increment startaddr
+
+    @endaddr
+    D = M
+    @startaddr
+    D = D - M
+    @RESTART // End the loop if start address has reached end address
+    D;JEQ
+    @DRAWWHITELOOP
+    0; JMP // Go the beggining of drawloop
+
