@@ -20,6 +20,19 @@
  * map. Access to address 0x6000 results in accessing the keyboard 
  * memory map. The behavior in these addresses is described in the 
  * Screen and Keyboard chip specifications given in the book.
+
+CHIP RAM16K {
+    IN in[16], load, address[14];
+    OUT out[16];
+
+CHIP Screen {
+    IN  in[16],    // what to write
+    load,          // write-enable bit
+    address[13];   // where to read/write
+    OUT out[16];   // Screen value at the given address
+
+CHIP Keyboard {
+    OUT out[16]; 
  */
 
 CHIP Memory {
@@ -28,4 +41,29 @@ CHIP Memory {
 
     PARTS:
     // Put your code here:
+
+    // If the MSB is 0, that means it is destined for RAM16K, so we set the loadbit if load is set
+    Not(in=address[14], out=p);
+    And(a=p, b=load, out=loadram);
+    RAM16K(in=in, load=loadram, address=address[0..13] , out=ram16);
+
+    // Check if it is screen, i.e. MSB is 1 and bit before is 0
+    Not(in=address[13], out=q);
+    And(a=address[14], b=q, out=isscreen);
+
+    // If it is the screen and the load is set then we set load for screen
+    And(a=isscreen, b=load, out=loadscreen);
+    Screen(in=in, load=loadscreen, address=address[0..12], out=screen16);
+
+    // Get the output of the keyboard
+    Keyboard(out=kb);
+
+    // If 00 -> ram16, 01 -> ram16, 10 -> screen16, 11 -> kb
+    Mux4Way16(a=ram16, b=ram16, c=screen16, d=kb, sel=address[13..14], out=out);
+
+    // addr 8192  "010000000000000".length == 15
+    // addr 16383 "011111111111111".length == 15    => last RAM address
+    // addr 16384 "100000000000000".length == 15    => first screen address
+    // addr 24575 "101111111111111".length == 15    => last screen address
+    // addr 24576 "110000000000000".length == 15    => keyboard address
 }

@@ -39,5 +39,48 @@ CHIP CPU {
         pc[15];          // address of next instruction
 
     PARTS:
-    // Put your code here:
+
+    // Instruction = 0 or ALU output = 1 at instruction[15]
+    Mux16(a=instruction, b=aluOut, sel=instruction[15], out=p);
+
+    // A register has control bit from instruction[5] when it is a c instruction
+    Not(in=instruction[15], out=aInstruction);
+    Or(a=aInstruction, b=instruction[5], out=loadA);
+    ARegister(in=p, load=loadA, out=outA, out[0..14]=addressM);
+
+    // D register has control bit from instruction[4], load only when it is a c instruction
+    And(a=instruction[15], b=instruction[4], out=loadD);
+    DRegister(in=aluOut, load=loadD, out=outD);
+
+    // Mux the A register and the value at A, which is M. Do this with the bit at index 12.
+    Mux16(a=outA, b=inM, sel=instruction[12], out=q);
+
+    ALU(x=outD, y=q, zx=instruction[11], nx=instruction[10], zy=instruction[9], 
+    ny=instruction[8], f=instruction[7], no=instruction[6], zr=outzr, ng=outng, out=aluComp);
+
+    // Mux either an a-instruction or a c-instruction
+    Mux16(a=outA, b=aluComp, sel=instruction[15], out=aluOut, out=outM);
+
+    // WriteM, if bit 4 and the opcode are 1, then write
+    And(a=instruction[3], b=instruction[15], out=writeM);
+
+    // PC
+    Not(in=zr, out=notzr);
+    Not(in=ng, out=notng);
+
+    And(a=false, b=false, out=loadNull);
+    And(a=notzr, b=notng, out=loadJGT);
+    And(a=zr, b=zr, out=loadJEQ);
+    And(a=notng, b=notng, out=loadJGE);
+    And(a=ng, b=ng, out=loadJLT);
+    And(a=notzr, b=notzr, out=loadJNE);
+    Or(a=zr, b=ng, out=loadJLE);
+    And(a=true, b=true, out=loadJMP);
+
+    Mux(a=loadNull, b=loadJGT, sel=instruction[0], out=m1);
+    
+
+    Mux8Way(a=loadNull, b=loadJGT, c=loadJEQ, d=loadJGE, e=loadJLT, f=loadJNE, g=loadJLE, h=loadJMP, sel=instruction[0..2], out=loadPC);
+
+    PC(in=outA, load=loadPC, inc=true, reset=reset, out[0..14]=pc);
 }
