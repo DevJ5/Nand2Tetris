@@ -26,7 +26,6 @@
  */
 
 CHIP CPU {
-
     IN  inM[16],         // M value input  (M = contents of RAM[A])
         instruction[16], // Instruction for execution
         reset;           // Signals whether to re-start the current
@@ -65,22 +64,19 @@ CHIP CPU {
     And(a=instruction[3], b=instruction[15], out=writeM);
 
     // PC
-    Not(in=zr, out=notzr);
-    Not(in=ng, out=notng);
+    Not(in=outzr, out=notzr);
+    Not(in=outng, out=notng);
+    And(a=notzr, b=notng, out=positive);
 
-    And(a=false, b=false, out=loadNull);
-    And(a=notzr, b=notng, out=loadJGT);
-    And(a=zr, b=zr, out=loadJEQ);
-    And(a=notng, b=notng, out=loadJGE);
-    And(a=ng, b=ng, out=loadJLT);
-    And(a=notzr, b=notzr, out=loadJNE);
-    Or(a=zr, b=ng, out=loadJLE);
-    And(a=true, b=true, out=loadJMP);
+    And(a=positive, b=instruction[0], out=posjump);
+    And(a=outzr, b=instruction[1], out=zerojump);
+    And(a=outng, b=instruction[2], out=negjump);
 
-    Mux(a=loadNull, b=loadJGT, sel=instruction[0], out=m1);
-    
+    Or(a=posjump, b=zerojump, out=jump1);
+    Or(a=jump1, b=negjump, out=jump2);
 
-    Mux8Way(a=loadNull, b=loadJGT, c=loadJEQ, d=loadJGE, e=loadJLT, f=loadJNE, g=loadJLE, h=loadJMP, sel=instruction[0..2], out=loadPC);
+    // Check if it is a c instruction
+    And(a=jump2, b=instruction[15], out=loadPC);
 
     PC(in=outA, load=loadPC, inc=true, reset=reset, out[0..14]=pc);
 }
