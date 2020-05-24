@@ -1,0 +1,28 @@
+
+
+“ixxaccccccdddjjj”
+
+y[15] = instruction opcode
+y[14] = nop
+y[13] = nop
+y[12] = A or M input
+y[11] = zx
+y[10] = nx
+y[9] = zy
+y[8] = ny
+y[7] = f
+y[6] = no
+y[5] = A register
+y[4] = D register
+y[3] = M register (in ram)
+y[2] = jump negative
+y[1] = jump zero
+y[0] = jump positive
+
+Add program:
+0000000000000010 // Address 2 in RAM
+1110110000010000 // A input, zx, nx, put y in D register, no jump -> D=A
+0000000000000011 // Address 3 in ram
+1110000010010000 // A input, f, D register, no jump -> D=D+A
+0000000000000000 // address 0 in RAM
+1110001100001000 // A input, zy, ny, put y in M register, no jump -> M=D
