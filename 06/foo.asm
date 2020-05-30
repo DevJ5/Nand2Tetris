@@ -1,4 +1,4 @@
 @THAT
-AMD = M - 1
+AMD = A + 1
 @0
 0;JMP
