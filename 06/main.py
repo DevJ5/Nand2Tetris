@@ -1,5 +1,5 @@
-from hackparser import Parser
-from hackcode import TranslateCode
+from hackParser import Parser
+from translateCode import TranslateCode
 import os
 
 import sys
