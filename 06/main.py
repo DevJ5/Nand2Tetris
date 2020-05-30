@@ -1,27 +1,29 @@
 from hackparser import Parser
 from hackcode import TranslateCode
+import os
 
 import sys
 
 
 def main():
-    asmFileName = sys.argv[1]
-    parser = Parser(asmFileName)
+    asmFilePath = sys.argv[1]
+    parser = Parser(asmFilePath)
+    asmFileName = os.path.basename(asmFilePath)
     # Open a new file with the same name and a .hack extension
     hackFileName = f"{asmFileName.split('.')[0]}.hack"
-    hackFilePointer = open(hackFileName, "w")
+    hackFilePointer = open(f"hackfiles/{hackFileName}", "w")
 
     while parser.hasMoreCommands():
         instruction = ""
         parser.advance()
-        print(parser)
         commandType = parser.getCommandType()
+        print("commandType: " + commandType)
         if commandType == parser.commandTypeA:
             # Opcode
             instruction += '0'
             # Address
             address = parser.symbol()
-            print(address)
+            print("Address: " + str(address))
             instruction += '{0:b}'.format(address).zfill(15)
         elif commandType == parser.commandTypeC:
             # Opcode

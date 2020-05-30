@@ -18,11 +18,16 @@ class Parser:
         return cursor != end
 
     def advance(self):
-        # FIXME: comments should be gone as well as empty lines
         # # A counter and reading as long as the line has comments or is an empty line (while loop?)
         # Removing all whitespaces in command
-        self.currentCommand = "".join(self.file.readline().split())
-        print(self.currentCommand)
+        while True:
+            line = ''.join(self.file.readline().split())
+            print("line: " + line)
+            # ignore comments and empty lines
+            if line != '' and not line.startswith('//'):
+                self.currentCommand = line
+                print("advance - currentCommand: " + self.currentCommand)
+                break
 
     def getCommandType(self):
         if self.currentCommand.startswith('@'):
