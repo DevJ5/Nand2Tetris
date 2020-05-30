@@ -1,5 +1,5 @@
 class TranslateCode:
-    _jumpCodes = ['JGT', 'JEQ', 'JGE', 'JLT', 'JNE', 'JLE', 'JMP']
+    _jumpCodes = ['', 'JGT', 'JEQ', 'JGE', 'JLT', 'JNE', 'JLE', 'JMP']
 
     def __init__(self):
         pass
@@ -18,7 +18,8 @@ class TranslateCode:
             'ADM': '111'
         }.get(sortedMnemonic, '000')
 
-    def comp(mnemonic):
+    def comp(self, mnemonic):
+        print("yo: " + mnemonic)
         return {
             '0': '0101010', '1': '0111111', '-1': '0111010', 'D': '0001100',
             'A': '0110000', '!D': '0001101', '!A': '0110001', '-D': '0001111',
@@ -31,7 +32,7 @@ class TranslateCode:
             'D&M': '1000000', 'D|M': '1010101'
         }.get(mnemonic)
 
-    def jump(mnemonic):
+    def jump(self, mnemonic):
         idx = self._jumpCodes.index(mnemonic)
         bits = str(bin(idx))[2:].zfill(3)
         return bits

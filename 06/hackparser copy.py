@@ -20,34 +20,35 @@ class Parser:
     def advance(self):
         # FIXME: comments should be gone as well as empty lines
         # # A counter and reading as long as the line has comments or is an empty line (while loop?)
-        # Removing all whitespaces in command
-        self.currentCommand = "".join(self.file.readline().split())
+        self.currentCommand = self.file.readline().rstrip('\r\n')
         print(self.currentCommand)
 
-    def getCommandType(self):
+    def commandType(self):
+        print("yes comes here")
         if self.currentCommand.startswith('@'):
-            self.commandType = self.commandTypeA
-        elif re.search(r'^\(.*\)$', self.currentCommand):
-            self.commandType = self.commandTypeL
+            self.commandType = commandTypeA
+        elif re.search(r'^\(.*\)$', currentCommand):
+            self.commandType = commandTypeL
         else:
-            self.commandType = self.commandTypeC
+            self.commandType = commandTypeC
         return self.commandType
 
     def symbol(self):
         # Return the symbol for A and L commands
-        if self.commandType == self.commandTypeA:
-            return int(self.currentCommand[1:])
-        if self.commandType == self.commandTypeL:
+        if self.commandType == commandTypeA:
+            return self.currentCommand[1:]
+        if self.commandType == commandTypeL:
             return self.currentCommand[1:-1]
 
     def dest(self):
-        print("inside dest" + self.currentCommand)
-        if self.commandType == self.commandTypeC:
-            match = re.search(r"^([AMD]{1,3})=", self.currentCommand)
-            if match:
-                return match.group(1)
+        if self.currentCommand == commandTypeC:
+            match = re.search(r"(^([AMD]{1,3})=", self.currentCommand)
+            if match == None:
+                return None
             else:
-                return ''
+                return match.group(1)
+        else:
+            return None
 
     def comp(self):
         # Requires to be a c command
@@ -65,7 +66,7 @@ class Parser:
         if ";" in self.currentCommand:
             return self.currentCommand.split(";")[1]
         else:
-            return ''
+            return None
 
     def closeFile(self):
         self.file.close()

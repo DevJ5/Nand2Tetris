@@ -1,5 +1,5 @@
 from hackparser import Parser
-from hackcode import MachineCode
+from hackcode import TranslateCode
 
 import sys
 
@@ -8,18 +8,20 @@ def main():
     asmFileName = sys.argv[1]
     parser = Parser(asmFileName)
     # Open a new file with the same name and a .hack extension
-    hackFileName = f"{asmFileName.split(".")[0]}.hack"
+    hackFileName = f"{asmFileName.split('.')[0]}.hack"
     hackFilePointer = open(hackFileName, "w")
 
     while parser.hasMoreCommands():
         instruction = ""
         parser.advance()
-        commandType = parser.commandType()
+        print(parser)
+        commandType = parser.getCommandType()
         if commandType == parser.commandTypeA:
             # Opcode
             instruction += '0'
             # Address
             address = parser.symbol()
+            print(address)
             instruction += '{0:b}'.format(address).zfill(15)
         elif commandType == parser.commandTypeC:
             # Opcode
@@ -40,11 +42,11 @@ def main():
             jumpBits = translateCode.jump(jumpMnemonic)
             instruction += jumpBits
 
-        # TODO:
-        # else: for the L command (LOOP)
+            # TODO:
+            # else: for the L command (LOOP)
 
         # Write the instruction line to the hack file
-        hackFilePointer.write(instruction)
+        hackFilePointer.write(instruction + "\n")
 
     # Clean up
     parser.closeFile()
