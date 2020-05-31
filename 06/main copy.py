@@ -1,26 +1,15 @@
 from hackParser import Parser
 from translateCode import TranslateCode
-from symbolTable import SymbolTable
 import os
+
 import sys
 
 #  TODO: When done remove all print statements
 
 
 def main():
-    # Initialize symbol table with predefined symbols
-    symbolTable = SymbolTable()
-    initSymbolTable(symbolTable)
-    symbolTable.printSymbolMap()
-    sys.exit()
-
-    # Initialize parser
     asmFilePath = sys.argv[1]
     parser = Parser(asmFilePath)
-
-    # First pass
-    parser.setLabelsInSymbolTable(symbolTable)
-
     asmFileName = os.path.basename(asmFilePath)
     # Open a new file with the same name and a .hack extension
     hackFileName = f"{asmFileName.split('.')[0]}.hack"
@@ -58,9 +47,7 @@ def main():
             instruction += jumpBits
 
             # TODO:
-            # for the L command (LOOP)
-            else:
-                pass
+            # else: for the L command (LOOP)
 
         # Write the instruction line to the hack file
         hackFilePointer.write(instruction + "\n")
@@ -68,22 +55,6 @@ def main():
     # Clean up
     parser.closeFile()
     hackFilePointer.close()
-
-
-def initSymbolTable(symbolTable):
-    symbolTable.addEntry('SP', '0')
-    symbolTable.addEntry('LCL', '1')
-    symbolTable.addEntry('ARG', '2')
-    symbolTable.addEntry('THIS', '3')
-    symbolTable.addEntry('THAT', '4')
-    for i in range(0, 16):
-        symbolTable.addEntry(f'R{i}', f'{i}')
-    symbolTable.addEntry('SCREEN', '16384')
-    symbolTable.addEntry('KBD', '24576')
-
-
-def firstPass(symbolTable):
-    pass
 
 
 if __name__ == "__main__":

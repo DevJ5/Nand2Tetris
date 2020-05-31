@@ -1,6 +1,6 @@
-@123
-AMD = A + 1
-
-// worry
-@0
-0;JMP
+    @SCREEN
+// a stupid comment
+    AMD = A + 1
+(END)
+    @0
+    0;JMP
