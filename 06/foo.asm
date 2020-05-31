@@ -1,6 +1,9 @@
     @SCREEN
-// a stupid comment
-    AMD = A + 1
+// a comment
 (END)
-    @0
+    AMD = A + 1
+    @END
+(ponggame.getinstance)
     0;JMP
+    @ponggame.0
+(LOOP)

@@ -17,32 +17,16 @@ class Parser:
         end = os.fstat(self.file.fileno()).st_size
         return cursor != end
 
-    def setLabelsInSymbolTable(self, symbolTable):
-        # Go through line by line
-        # Ignore empty lines and comments
-        # Increment counter every line except when label is found
-        # When label is found add label as key, current counter as value
-        re.search(r'^\(.*\)$', self.currentCommand):
-        counter = 0
-        while True:
-            line = ''.join(self.file.readline().split())
-            print("line: " + line)
-            # ignore comments and empty lines
-            if line != '' and not line.startswith('//'):
-                counter += 1
-                self.currentCommand = line
-                print("advance - currentCommand: " + self.currentCommand)
-                break
-
     def advance(self):
         # # A counter and reading as long as the line has comments or is an empty line (while loop?)
-        # Removing all whitespaces in command
         while True:
+            # Removing all whitespaces in line
             line = ''.join(self.file.readline().split())
             print("line: " + line)
-            # ignore comments and empty lines
+            # Ignore comments and empty lines
             if line != '' and not line.startswith('//'):
-                self.currentCommand = line
+                # Take the line up to a potential inline comment
+                self.currentCommand = line.split('/')[0]
                 print("advance - currentCommand: " + self.currentCommand)
                 break
 
@@ -58,7 +42,7 @@ class Parser:
     def symbol(self):
         # Return the symbol for A and L commands
         if self.commandType == self.commandTypeA:
-            return int(self.currentCommand[1:])
+            return self.currentCommand[1:]
         if self.commandType == self.commandTypeL:
             return self.currentCommand[1:-1]
 
