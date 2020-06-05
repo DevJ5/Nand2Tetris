@@ -69,4 +69,3 @@
     D;JEQ
     @DRAWWHITELOOP
     0; JMP // Go the beggining of drawloop
-
