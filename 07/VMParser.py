@@ -63,3 +63,6 @@ class VMParser:
                 raise ValueError("CommandType must be push or pop.")
         except ValueError as error:
             print(error)
+
+    def closeInputFile(self):
+        self.file.close()

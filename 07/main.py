@@ -38,16 +38,25 @@ def main():
 
     while (parser.hasMoreCommands()):
         parser.advance()
-        # currentCommand = parser.currentCommand
         commandType = parser.getCommandType()
+        # Write the command that is being translated as a comment at the start
+        codeWriter.writeCommandComment(parser.currentCommand)
         if (commandType == parser.C_ARITHMETIC):
             codeWriter.writeArithmetic(parser.getCommandSubtype())
-        elif (commandType == parser.C_PUSH or commandType == parser.C_POP):
+        elif (commandType == parser.C_PUSH):
             segment = parser.getArg1()
             index = parser.getArg2()
-            codeWriter.writePushPop(parser.getCommandSubtype(), segment, index)
+            codeWriter.writePush(parser.getCommandSubtype(), segment, index)
+        elif (commandType == parser.C_POP):
+            segment = parser.getArg1()
+            index = parser.getArg2()
+            codeWriter.writePop(parser.getCommandSubtype(), segment, index)
         else:
             pass
+
+    # Close files after translation has been done
+    parser.closeInputFile()
+    codeWriter.closeOutputFile()
 
 
 if __name__ == "__main__":

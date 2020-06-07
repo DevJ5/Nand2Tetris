@@ -1,4 +1,18 @@
-	// eq
+// Command: push constant 17
+@17
+D = A
+@SP
+M = M + 1
+A = M - 1
+M = D
+// Command: push constant 17
+@17
+D = A
+@SP
+M = M + 1
+A = M - 1
+M = D
+// Command: eq
 @SP
 AM = M - 1
 D = M
@@ -11,7 +25,21 @@ D;JEQ
 A = M - 1
 M = 0
 (EQISTRUE_1)
-	// eq
+// Command: push constant 17
+@17
+D = A
+@SP
+M = M + 1
+A = M - 1
+M = D
+// Command: push constant 16
+@16
+D = A
+@SP
+M = M + 1
+A = M - 1
+M = D
+// Command: eq
 @SP
 AM = M - 1
 D = M
@@ -24,7 +52,21 @@ D;JEQ
 A = M - 1
 M = 0
 (EQISTRUE_2)
-	// eq
+// Command: push constant 16
+@16
+D = A
+@SP
+M = M + 1
+A = M - 1
+M = D
+// Command: push constant 17
+@17
+D = A
+@SP
+M = M + 1
+A = M - 1
+M = D
+// Command: eq
 @SP
 AM = M - 1
 D = M
@@ -37,7 +79,21 @@ D;JEQ
 A = M - 1
 M = 0
 (EQISTRUE_3)
-	// lt
+// Command: push constant 892
+@892
+D = A
+@SP
+M = M + 1
+A = M - 1
+M = D
+// Command: push constant 891
+@891
+D = A
+@SP
+M = M + 1
+A = M - 1
+M = D
+// Command: lt
 @SP
 AM = M - 1
 D = M
@@ -50,7 +106,21 @@ D;JLT
 A = M - 1
 M = 0
 (LTISTRUE_4)
-	// lt
+// Command: push constant 891
+@891
+D = A
+@SP
+M = M + 1
+A = M - 1
+M = D
+// Command: push constant 892
+@892
+D = A
+@SP
+M = M + 1
+A = M - 1
+M = D
+// Command: lt
 @SP
 AM = M - 1
 D = M
@@ -63,7 +133,21 @@ D;JLT
 A = M - 1
 M = 0
 (LTISTRUE_5)
-	// lt
+// Command: push constant 891
+@891
+D = A
+@SP
+M = M + 1
+A = M - 1
+M = D
+// Command: push constant 891
+@891
+D = A
+@SP
+M = M + 1
+A = M - 1
+M = D
+// Command: lt
 @SP
 AM = M - 1
 D = M
@@ -76,7 +160,21 @@ D;JLT
 A = M - 1
 M = 0
 (LTISTRUE_6)
-	// gt
+// Command: push constant 32767
+@32767
+D = A
+@SP
+M = M + 1
+A = M - 1
+M = D
+// Command: push constant 32766
+@32766
+D = A
+@SP
+M = M + 1
+A = M - 1
+M = D
+// Command: gt
 @SP
 AM = M - 1
 D = M
@@ -89,7 +187,21 @@ D;JGT
 A = M - 1
 M = 0
 (GTISTRUE_7)
-	// gt
+// Command: push constant 32766
+@32766
+D = A
+@SP
+M = M + 1
+A = M - 1
+M = D
+// Command: push constant 32767
+@32767
+D = A
+@SP
+M = M + 1
+A = M - 1
+M = D
+// Command: gt
 @SP
 AM = M - 1
 D = M
@@ -102,7 +214,21 @@ D;JGT
 A = M - 1
 M = 0
 (GTISTRUE_8)
-	// gt
+// Command: push constant 32766
+@32766
+D = A
+@SP
+M = M + 1
+A = M - 1
+M = D
+// Command: push constant 32766
+@32766
+D = A
+@SP
+M = M + 1
+A = M - 1
+M = D
+// Command: gt
 @SP
 AM = M - 1
 D = M
@@ -115,35 +241,70 @@ D;JGT
 A = M - 1
 M = 0
 (GTISTRUE_9)
-	// add
+// Command: push constant 57
+@57
+D = A
+@SP
+M = M + 1
+A = M - 1
+M = D
+// Command: push constant 31
+@31
+D = A
+@SP
+M = M + 1
+A = M - 1
+M = D
+// Command: push constant 53
+@53
+D = A
+@SP
+M = M + 1
+A = M - 1
+M = D
+// Command: add
 @SP
 AM = M - 1
 D = M
 A = A - 1
 M = D + M
-	// sub
+// Command: push constant 112
+@112
+D = A
+@SP
+M = M + 1
+A = M - 1
+M = D
+// Command: sub
 @SP
 AM = M - 1
 D = M
 A = A - 1
 M = M - D
-	// neg
+// Command: neg
 @SP
 A = M - 1
 M = -M
-	// and
+// Command: and
 @SP
 AM = M - 1
 D = M
 A = A - 1
 M = M&D
-	// or
+// Command: push constant 82
+@82
+D = A
+@SP
+M = M + 1
+A = M - 1
+M = D
+// Command: or
 @SP
 AM = M - 1
 D = M
 A = A - 1
 M = M|D
-	// not
+// Command: not
 @SP
 A = M - 1
 M = !M

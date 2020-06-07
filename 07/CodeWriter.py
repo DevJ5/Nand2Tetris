@@ -1,15 +1,23 @@
 import textwrap
+import os
 
 
 class CodeWriter:
+    segmentAddresses = {
+        "local": "LCL",
+        "argument": "ARG",
+        "this": "THIS",
+        "that": "THAT"
+    }
 
     def __init__(self, file):
+        self.fileName = os.path.basename(file).split(".")[0]
         self.file = open(file, "w")
         self.labelCounter = 1
 
     def writeArithmetic(self, command):
         if (command == "add"):
-            asmCommand = textwrap.dedent("""\
+            asmArithmeticCommand = textwrap.dedent("""\
                 @SP
                 AM = M - 1
                 D = M
@@ -17,7 +25,7 @@ class CodeWriter:
                 M = D + M
                 """)
         elif (command == "sub"):
-            asmCommand = textwrap.dedent("""\
+            asmArithmeticCommand = textwrap.dedent("""\
                 @SP
                 AM = M - 1
                 D = M
@@ -25,13 +33,13 @@ class CodeWriter:
                 M = M - D
                 """)
         elif (command == "neg"):
-            asmCommand = textwrap.dedent("""\
+            asmArithmeticCommand = textwrap.dedent("""\
                 @SP
                 A = M - 1
                 M = -M
                 """)
         elif (command == "eq"):
-            asmCommand = textwrap.dedent(f"""\
+            asmArithmeticCommand = textwrap.dedent(f"""\
                 @SP
                 AM = M - 1
                 D = M
@@ -47,7 +55,7 @@ class CodeWriter:
                 """)
             self.labelCounter += 1
         elif (command == "gt"):
-            asmCommand = textwrap.dedent(f"""\
+            asmArithmeticCommand = textwrap.dedent(f"""\
                 @SP
                 AM = M - 1
                 D = M
@@ -63,7 +71,7 @@ class CodeWriter:
                 """)
             self.labelCounter += 1
         elif (command == "lt"):
-            asmCommand = textwrap.dedent(f"""\
+            asmArithmeticCommand = textwrap.dedent(f"""\
                 @SP
                 AM = M - 1
                 D = M
@@ -79,7 +87,7 @@ class CodeWriter:
                 """)
             self.labelCounter += 1
         elif (command == "and"):
-            asmCommand = textwrap.dedent(f"""\
+            asmArithmeticCommand = textwrap.dedent(f"""\
                 @SP
                 AM = M - 1
                 D = M
@@ -87,7 +95,7 @@ class CodeWriter:
                 M = M&D
                 """)
         elif (command == "or"):
-            asmCommand = textwrap.dedent(f"""\
+            asmArithmeticCommand = textwrap.dedent(f"""\
                 @SP
                 AM = M - 1
                 D = M
@@ -95,7 +103,7 @@ class CodeWriter:
                 M = M|D
                 """)
         elif (command == "not"):
-            asmCommand = textwrap.dedent(f"""\
+            asmArithmeticCommand = textwrap.dedent(f"""\
                 @SP
                 A = M - 1
                 M = !M
@@ -103,65 +111,127 @@ class CodeWriter:
         else:
             raise ValueError("Arithmetic/logical command not recognized.")
 
-        # Write the command that is being translated as a comment at the start
-        self.writeCommandComment(command)
         # Write the assembly command
-        self.file.write(asmCommand)
+        self.file.write(asmArithmeticCommand)
 
-    def writePushPop(self, command, segment, index):
-        # pop segment index
-        if (command == "pop"):
-            if (command == "constant"):
-                raise ValueError("Pop can not be used with constant segment.")
-            elif (command == "static"):
-                pass
-            else:
-                asmCommand = textwrap.dedent(f"""\
-                    @{index}
-                    D = A
-                    @{segment}
-                    D = A + D
-                    @R13
-                    M = D
-                    @SP
-                    AM = M - 1
-                    D = M
-                    @R13
-                    A = M
-                    M = D
-                    """)
-        # push segment index
-        elif (command == "push"):
-            # push constant 7
-            if (segment == "constant"):
-                asmCommand = textwrap.dedent(f"""\
+    def writePush(self, command, segment, index):
+        # Local, argument, this and that
+        if (segment in self.segmentAddresses):
+            asmPushCommand = textwrap.dedent(f"""\
+                @{self.segmentAddresses.get(segment)}
+                D = M
                 @{index}
-                D = A
-                @SP
-                M = D
-                """)
-            elif (segment == "static"):
-                pass
-            else:
-                asmCommand = textwrap.dedent(f"""\
-                @{index}
-                D = A
-                @{segment}
                 A = A + D
                 D = M
                 @SP
+                AM = M + 1
+                A = A - 1
+                M = D
+                """)
+        elif (segment == "constant"):
+            asmPushCommand = textwrap.dedent(f"""\
+                @{index}
+                D = A
+                @SP
+                AM = M + 1
+                A = A - 1
+                M = D
+                """)
+        elif (segment == "static"):
+            asmPushCommand = textwrap.dedent(f"""\
+                @{self.fileName}.{index}
+                D = M
+                @SP
+                AM = M + 1
+                A = A - 1
+                M = D
+                """)
+        elif (segment == "pointer"):
+            if (index != "0" and index != "1"):
+                raise ValueError("Pointer index can only be 0 or 1.")
+            # If index is 0 then it is this, otherwise it is that
+            thisOrThat = "this" if index == "0" else "that"
+            asmPushCommand = textwrap.dedent(f"""\
+                @{self.segmentAddresses.get(thisOrThat)}
+                D = M
+                @SP
+                AM = M + 1
+                A = A - 1
+                M = D
+                """)
+        elif (segment == "temp"):
+            asmPushCommand = textwrap.dedent(f"""\
+                @{self.getTempAddress(index)}
+                D = M
+                @SP
+                AM = M + 1
+                A = A - 1
                 M = D
                 """)
         else:
-            raise ValueError("Unrecognized push/pop command.")
+            raise ValueError("Unrecognized push command.")
 
-        # Write the command that is being translated as a comment at the start
-        self.writeCommandComment(command)
-        # Write the assembly command
-        self.file.write(asmCommand)
+        # Write the assembly push command
+        self.file.write(asmPushCommand)
+
+    def writePop(self, command, segment, index):
+        if (segment in self.segmentAddresses):
+            asmPopCommand = textwrap.dedent(f"""\
+                @{index}
+                D = A
+                @{self.segmentAddresses.get(segment)}
+                D = M + D
+                @R13
+                M = D
+                @SP
+                AM = M - 1
+                D = M
+                @R13
+                A = M
+                M = D
+                """)
+        elif (segment == "constant"):
+            raise ValueError("Pop can not be used with constant segment.")
+        elif (segment == "static"):
+            asmPopCommand = textwrap.dedent(f"""\
+                @SP
+                AM = M - 1
+                D = M
+                @{self.fileName}.{index}
+                M = D
+                """)
+        elif (segment == "pointer"):
+            if (index != "0" and index != "1"):
+                raise ValueError("Pointer index can only be 0 or 1.")
+            # If index is 0 then it is this, otherwise it is that
+            thisOrThat = "this" if index == "0" else "that"
+            asmPopCommand = textwrap.dedent(f"""\
+                @SP
+                AM = M - 1
+                D = M
+                @{self.segmentAddresses.get(thisOrThat)}
+                M = D
+                """)
+        elif (segment == "temp"):
+            asmPopCommand = textwrap.dedent(f"""\
+                @SP
+                AM = M - 1
+                D = M
+                @{self.getTempAddress(index)}
+                M = D
+                """)
+        else:
+            raise ValueError("Unrecognized push command.")
+
+        # Write the assembly pop command
+        self.file.write(asmPopCommand)
+
+    def getTempAddress(self, index):
+        baseTempAddress = 5
+        return str(baseTempAddress + int(index))
 
     def writeCommandComment(self, command):
-        self.file.write(f"\t// {command}\n")
+        self.file.write(f"// Command: {command}\n")
 
     def closeOutputFile(self):
         self.file.close()
