@@ -4,17 +4,13 @@ import os
 from VMParser import VMParser
 from CodeWriter import CodeWriter
 
-# Challenges:
-# - static memory segment (is this done in files?)
-# - How to assign *X = *Y (with temp variable?)
-
 
 def main():
     # Takes as input fileName.vm
     # Outputs fileName.asm
     # Example: python main.py BasicTest/BasicTest.vm
     # Translate BasicTest.vm into BasicTest.asm
-    # Check if BasicTest.asm contains nice comments :)
+    # Check if BasicTest.asm contains nice comments
     # Load BasicTest.asm and BasicTest.tst and check results
 
     # Check if program is correctly run
