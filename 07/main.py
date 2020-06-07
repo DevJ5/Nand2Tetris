@@ -38,13 +38,16 @@ def main():
 
     while (parser.hasMoreCommands()):
         parser.advance()
-        #currentCommand = parser.currentCommand
+        # currentCommand = parser.currentCommand
         commandType = parser.getCommandType()
         if (commandType == parser.C_ARITHMETIC):
-            subCommandType = parser.getCommandSubtype()
-            if (subCommandType == "add"):
-                codeWriter.writeArithmetic(parser.currentCommand)
-        print("commandType: " + commandType)
+            codeWriter.writeArithmetic(parser.getCommandSubtype())
+        elif (commandType == parser.C_PUSH or commandType == parser.C_POP):
+            segment = parser.getArg1()
+            index = parser.getArg2()
+            codeWriter.writePushPop(parser.getCommandSubtype(), segment, index)
+        else:
+            pass
 
 
 if __name__ == "__main__":

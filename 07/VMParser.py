@@ -36,7 +36,7 @@ class VMParser:
             self.commandType = self.C_PUSH
         elif (self.currentCommand.startswith("pop")):
             self.commandType = self.C_POP
-        elif (self.currentCommand.startswith(("add", "sub", "neg"))):
+        elif (self.currentCommand.startswith(("add", "sub", "neg", "eq", "gt", "lt", "and", "or", "not"))):
             self.commandType = self.C_ARITHMETIC
 
         return self.commandType or "None"
