@@ -6,6 +6,7 @@ class VMParser:
     C_ARITHMETIC = "C_ARITHMETIC"
     C_PUSH = "C_PUSH"
     C_POP = "C_POP"
+    # TODO: 
     C_LABEL = "C_LABEL"
     C_GOTO = "C_GOTO"
     C_IF = "C_IF"
@@ -38,6 +39,7 @@ class VMParser:
             self.commandType = self.C_POP
         elif (self.currentCommand.startswith(("add", "sub", "neg", "eq", "gt", "lt", "and", "or", "not"))):
             self.commandType = self.C_ARITHMETIC
+        # TODO: rest of the commands
 
         return self.commandType or "None"
 

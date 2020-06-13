@@ -6,7 +6,7 @@ from CodeWriter import CodeWriter
 
 
 def main():
-    # Takes as input fileName.vm
+    # Takes as input fileName.vm or TODO: directory name containing one or more .vm files
     # Outputs fileName.asm
     # Example: python main.py BasicTest/BasicTest.vm
     # Translate BasicTest.vm into BasicTest.asm
