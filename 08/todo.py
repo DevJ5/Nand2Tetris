@@ -1,0 +1,8 @@
+- push returnAddress
+- push LCL
+- push ARG
+- push THIS
+- push THAT
+- ARG = SP - 5 - numArgs
+- LCL = SP
+- goto functionName
