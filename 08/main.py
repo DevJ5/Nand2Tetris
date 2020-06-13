@@ -6,15 +6,14 @@ from CodeWriter import CodeWriter
 
 
 def main():
-    # Takes as input fileName.vm or TODO: directory name containing one or more .vm files
-    # Outputs fileName.asm
-    # Example: python main.py BasicTest/BasicTest.vm
-    # Translate BasicTest.vm into BasicTest.asm
-    # Check if BasicTest.asm contains nice comments
-    # Load BasicTest.asm and BasicTest.tst and check results
+    # TODO: file or directory name containing one or more .vm files
+    # Outputs fileName/directoryName.asm
+    # Example: python main.py FibonacciElement
+    # Translate Main.vm and Sys.vm into FibonacciElement.asm
 
     # Check if program is correctly run
     try:
+        # TODO: deze moet directories kunnen ontvangen
         extension = os.path.splitext(sys.argv[1])[1]
         if (extension != ".vm"):
             raise Exception
@@ -22,11 +21,14 @@ def main():
         print("Usage: main.py [filename.vm]")
         sys.exit(1)
 
-    # Parse the command line input
+    # Parse the command line input TODO: check the files in een directory voor .vm files
     vmFilePath = sys.argv[1]
     vmFileName = os.path.basename(vmFilePath)
     vmFileDirectory = os.path.dirname(vmFilePath)
 
+    # TODO: Bootstrap code, SP = 256, Call Sys.init moet als eerste gewrite worden
+
+    # TODO: Hier moet een loop komen die door alle .vm files heenloopt
     # Initialize parser with file to read from
     parser = VMParser(vmFilePath)
 
@@ -34,6 +36,8 @@ def main():
     asmFilePath = os.path.normpath(os.path.join(
         vmFileDirectory, vmFileName.split(".")[0] + ".asm"))
     codeWriter = CodeWriter(asmFilePath)
+    # TODO: If er een sys.vm file aanwezig is, doe een init
+    # codeWriter.writeInit()
 
     while (parser.hasMoreCommands()):
         parser.advance()

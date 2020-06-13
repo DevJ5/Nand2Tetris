@@ -15,6 +15,16 @@ class CodeWriter:
         self.file = open(file, "w")
         self.labelCounter = 1
 
+    def writeInit(self):
+        self.file.write(textwrap.dedent(f"""\
+            @256
+            D = A
+            @SP
+            M = D
+            @Sys.init
+            0; JMP
+            """))
+
     def writeArithmetic(self, command):
         if (command == "add"):
             asmArithmeticCommand = textwrap.dedent("""\
@@ -259,14 +269,69 @@ class CodeWriter:
             A = A - 1
             M = 0
             @R13
-            DM = M - 1
+            M = M - 1
+            D = M
             @INIT_LOCALS
             D;JNE
             (END_INIT_LOCALS)
             """))
 
     def writeReturn(self):
-        pass
+        self.file.write(textwrap.dedent(f"""\
+            @{self.segmentAddresses.get("local")}
+            D = M
+            @R13
+            M = D
+            @5
+            A = D - A
+            D = M
+            @R14
+            M = D
+            @SP
+            AM = M - 1
+            D = M
+            @{self.segmentAddresses.get("argument")}
+            A = M
+            M = D
+            @{self.segmentAddresses.get("argument")}
+            D = M + 1
+            @SP
+            M = D
+            @R13
+            D = M
+            @1
+            A = D - A
+            D = M
+            @{self.segmentAddresses.get("that")}
+            M = D
+            @R13
+            D = M
+            @2
+            A = D - A
+            D = M
+            @{self.segmentAddresses.get("this")}
+            M = D
+            @R13
+            D = M
+            @3
+            A = D - A
+            D = M
+            @{self.segmentAddresses.get("argument")}
+            M = D
+            @R13
+            D = M
+            @4
+            A = D - A
+            D = M
+            @{self.segmentAddresses.get("local")}
+            M = D
+            @R14
+            A = M
+            0; JMP
+            """))
+
+        def writeCall(self):
+            pass
 
     def getTempAddress(self, index):
         baseTempAddress = 5
