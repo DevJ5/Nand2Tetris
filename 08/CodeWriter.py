@@ -12,8 +12,9 @@ class CodeWriter:
 
     def __init__(self, file):
         self.fileName = os.path.basename(file).split(".")[0]
-        self.file = open(file, "w")
+        self.file = open(file, "a")
         self.labelCounter = 1
+        self.returnCounter = 1
 
     def writeInit(self):
         self.file.write(textwrap.dedent(f"""\
@@ -261,9 +262,9 @@ class CodeWriter:
             D = A
             @R13
             M = D
-            @END_INIT_LOCALS
+            @END_INIT_LOCALS_{functionName.upper()}
             D;JEQ
-            (INIT_LOCALS)
+            (INIT_LOCALS_{functionName.upper()})
             @SP
             AM = M + 1
             A = A - 1
@@ -271,9 +272,9 @@ class CodeWriter:
             @R13
             M = M - 1
             D = M
-            @INIT_LOCALS
+            @INIT_LOCALS_{functionName.upper()}
             D;JNE
-            (END_INIT_LOCALS)
+            (END_INIT_LOCALS_{functionName.upper()})
             """))
 
     def writeReturn(self):
@@ -330,8 +331,55 @@ class CodeWriter:
             0; JMP
             """))
 
-        def writeCall(self):
-            pass
+    def writeCall(self, functionName, numArgs):
+        self.file.write(textwrap.dedent(f"""\
+            @{self.fileName}$ret{self.returnCounter}
+            D = A
+            @SP
+            AM = M + 1
+            A = A - 1
+            M = D
+            @{self.segmentAddresses.get("local")}
+            D = M
+            @SP
+            AM = M + 1
+            A = A - 1
+            M = D
+            @{self.segmentAddresses.get("argument")}
+            D = M
+            @SP
+            AM = M + 1
+            A = A - 1
+            M = D
+            @{self.segmentAddresses.get("this")}
+            D = M
+            @SP
+            AM = M + 1
+            A = A - 1
+            M = D
+            @{self.segmentAddresses.get("that")}
+            D = M
+            @SP
+            AM = M + 1
+            A = A - 1
+            M = D
+            @SP
+            D = M
+            @5
+            D = D - A
+            @{numArgs}
+            D = D - A
+            @{self.segmentAddresses.get("argument")}
+            M = D
+            @SP
+            D = M
+            @{self.segmentAddresses.get("local")}
+            M = D
+            @{functionName}
+            0; JMP
+            ({self.fileName}$ret{self.returnCounter})
+            """))
+        self.returnCounter += 1
 
     def getTempAddress(self, index):
         baseTempAddress = 5
