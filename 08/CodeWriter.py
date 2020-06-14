@@ -24,9 +24,8 @@ class CodeWriter:
             D = A
             @SP
             M = D
-            @Sys.init
-            0; JMP
             """))
+        self.writeCall("Sys.init", "0")
 
     def writeArithmetic(self, command):
         if (command == "add"):
@@ -160,7 +159,6 @@ class CodeWriter:
                 A = A - 1
                 M = D
                 """)
-            self.staticCounter += 1
         elif (segment == "pointer"):
             if (index != "0" and index != "1"):
                 raise ValueError("Pointer index can only be 0 or 1.")
@@ -208,13 +206,15 @@ class CodeWriter:
         elif (segment == "constant"):
             raise ValueError("Pop can not be used with constant segment.")
         elif (segment == "static"):
+            realIndex = str(int(index) + self.staticOffset)
             asmPopCommand = textwrap.dedent(f"""\
                 @SP
                 AM = M - 1
                 D = M
-                @{self.fileName}.{index}
+                @{self.fileName}.{realIndex}
                 M = D
                 """)
+            self.staticCounter += 1
         elif (segment == "pointer"):
             if (index != "0" and index != "1"):
                 raise ValueError("Pointer index can only be 0 or 1.")

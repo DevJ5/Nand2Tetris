@@ -1,52 +1,3 @@
-@256
-D = A
-@SP
-M = D
-@NestedCall$ret1
-D = A
-@SP
-AM = M + 1
-A = A - 1
-M = D
-@LCL
-D = M
-@SP
-AM = M + 1
-A = A - 1
-M = D
-@ARG
-D = M
-@SP
-AM = M + 1
-A = A - 1
-M = D
-@THIS
-D = M
-@SP
-AM = M + 1
-A = A - 1
-M = D
-@THAT
-D = M
-@SP
-AM = M + 1
-A = A - 1
-M = D
-@SP
-D = M
-@5
-D = D - A
-@0
-D = D - A
-@ARG
-M = D
-@SP
-D = M
-@LCL
-M = D
-@Sys.init
-0; JMP
-(NestedCall$ret1)
 // Command: function Sys.init 0
 (Sys.init)
 @0
@@ -93,7 +44,7 @@ D = M
 @THAT
 M = D
 // Command: call Sys.main 0
-@NestedCall$ret2
+@Sys$ret1
 D = A
 @SP
 AM = M + 1
@@ -137,7 +88,7 @@ D = M
 M = D
 @Sys.main
 0; JMP
-(NestedCall$ret2)
+(Sys$ret1)
 // Command: pop temp 1
 @SP
 AM = M - 1
@@ -262,7 +213,7 @@ AM = M + 1
 A = A - 1
 M = D
 // Command: call Sys.add12 1
-@NestedCall$ret3
+@Sys$ret2
 D = A
 @SP
 AM = M + 1
@@ -306,7 +257,7 @@ D = M
 M = D
 @Sys.add12
 0; JMP
-(NestedCall$ret3)
+(Sys$ret2)
 // Command: pop temp 0
 @SP
 AM = M - 1

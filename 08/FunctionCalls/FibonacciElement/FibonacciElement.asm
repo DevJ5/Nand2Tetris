@@ -1,9 +1,52 @@
-@261
+@256
 D = A
 @SP
 M = D
+@FibonacciElement$ret1
+D = A
+@SP
+AM = M + 1
+A = A - 1
+M = D
+@LCL
+D = M
+@SP
+AM = M + 1
+A = A - 1
+M = D
+@ARG
+D = M
+@SP
+AM = M + 1
+A = A - 1
+M = D
+@THIS
+D = M
+@SP
+AM = M + 1
+A = A - 1
+M = D
+@THAT
+D = M
+@SP
+AM = M + 1
+A = A - 1
+M = D
+@SP
+D = M
+@5
+D = D - A
+@0
+D = D - A
+@ARG
+M = D
+@SP
+D = M
+@LCL
+M = D
 @Sys.init
 0; JMP
+(FibonacciElement$ret1)
 // Command: function Main.fibonacci 0
 (Main.fibonacci)
 @0
@@ -151,75 +194,6 @@ D = M
 A = A - 1
 M = M - D
 // Command: call Main.fibonacci 1  // computes fib(n-2)
-@FibonacciElement$ret1
-D = A
-@SP
-AM = M + 1
-A = A - 1
-M = D
-@LCL
-D = M
-@SP
-AM = M + 1
-A = A - 1
-M = D
-@ARG
-D = M
-@SP
-AM = M + 1
-A = A - 1
-M = D
-@THIS
-D = M
-@SP
-AM = M + 1
-A = A - 1
-M = D
-@THAT
-D = M
-@SP
-AM = M + 1
-A = A - 1
-M = D
-@SP
-D = M
-@5
-D = D - A
-@1
-D = D - A
-@ARG
-M = D
-@SP
-D = M
-@LCL
-M = D
-@Main.fibonacci
-0; JMP
-(FibonacciElement$ret1)
-// Command: push argument 0
-@ARG
-D = M
-@0
-A = A + D
-D = M
-@SP
-AM = M + 1
-A = A - 1
-M = D
-// Command: push constant 1
-@1
-D = A
-@SP
-AM = M + 1
-A = A - 1
-M = D
-// Command: sub
-@SP
-AM = M - 1
-D = M
-A = A - 1
-M = M - D
-// Command: call Main.fibonacci 1  // computes fib(n-1)
 @FibonacciElement$ret2
 D = A
 @SP
@@ -265,6 +239,75 @@ M = D
 @Main.fibonacci
 0; JMP
 (FibonacciElement$ret2)
+// Command: push argument 0
+@ARG
+D = M
+@0
+A = A + D
+D = M
+@SP
+AM = M + 1
+A = A - 1
+M = D
+// Command: push constant 1
+@1
+D = A
+@SP
+AM = M + 1
+A = A - 1
+M = D
+// Command: sub
+@SP
+AM = M - 1
+D = M
+A = A - 1
+M = M - D
+// Command: call Main.fibonacci 1  // computes fib(n-1)
+@FibonacciElement$ret3
+D = A
+@SP
+AM = M + 1
+A = A - 1
+M = D
+@LCL
+D = M
+@SP
+AM = M + 1
+A = A - 1
+M = D
+@ARG
+D = M
+@SP
+AM = M + 1
+A = A - 1
+M = D
+@THIS
+D = M
+@SP
+AM = M + 1
+A = A - 1
+M = D
+@THAT
+D = M
+@SP
+AM = M + 1
+A = A - 1
+M = D
+@SP
+D = M
+@5
+D = D - A
+@1
+D = D - A
+@ARG
+M = D
+@SP
+D = M
+@LCL
+M = D
+@Main.fibonacci
+0; JMP
+(FibonacciElement$ret3)
 // Command: add                    // returns fib(n-1) + fib(n-2)
 @SP
 AM = M - 1
@@ -349,7 +392,7 @@ AM = M + 1
 A = A - 1
 M = D
 // Command: call Main.fibonacci 1   // computes the 4'th fibonacci element
-@FibonacciElement$ret3
+@FibonacciElement$ret4
 D = A
 @SP
 AM = M + 1
@@ -393,7 +436,7 @@ D = M
 M = D
 @Main.fibonacci
 0; JMP
-(FibonacciElement$ret3)
+(FibonacciElement$ret4)
 // Command: label WHILE
 (WHILE)
 // Command: goto WHILE              // loops infinitely

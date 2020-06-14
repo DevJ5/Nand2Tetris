@@ -2,8 +2,51 @@
 D = A
 @SP
 M = D
+@StaticsTest$ret1
+D = A
+@SP
+AM = M + 1
+A = A - 1
+M = D
+@LCL
+D = M
+@SP
+AM = M + 1
+A = A - 1
+M = D
+@ARG
+D = M
+@SP
+AM = M + 1
+A = A - 1
+M = D
+@THIS
+D = M
+@SP
+AM = M + 1
+A = A - 1
+M = D
+@THAT
+D = M
+@SP
+AM = M + 1
+A = A - 1
+M = D
+@SP
+D = M
+@5
+D = D - A
+@0
+D = D - A
+@ARG
+M = D
+@SP
+D = M
+@LCL
+M = D
 @Sys.init
 0; JMP
+(StaticsTest$ret1)
 // Command: function Class1.set 0
 (Class1.set)
 @0
@@ -236,7 +279,7 @@ M = D
 @SP
 AM = M - 1
 D = M
-@StaticsTest.0
+@StaticsTest.2
 M = D
 // Command: push argument 1
 @ARG
@@ -252,7 +295,7 @@ M = D
 @SP
 AM = M - 1
 D = M
-@StaticsTest.1
+@StaticsTest.3
 M = D
 // Command: push constant 0
 @0
@@ -436,7 +479,7 @@ AM = M + 1
 A = A - 1
 M = D
 // Command: call Class1.set 2
-@StaticsTest$ret1
+@StaticsTest$ret2
 D = A
 @SP
 AM = M + 1
@@ -480,7 +523,7 @@ D = M
 M = D
 @Class1.set
 0; JMP
-(StaticsTest$ret1)
+(StaticsTest$ret2)
 // Command: pop temp 0 // Dumps the return value
 @SP
 AM = M - 1
@@ -502,7 +545,7 @@ AM = M + 1
 A = A - 1
 M = D
 // Command: call Class2.set 2
-@StaticsTest$ret2
+@StaticsTest$ret3
 D = A
 @SP
 AM = M + 1
@@ -546,7 +589,7 @@ D = M
 M = D
 @Class2.set
 0; JMP
-(StaticsTest$ret2)
+(StaticsTest$ret3)
 // Command: pop temp 0 // Dumps the return value
 @SP
 AM = M - 1
@@ -554,7 +597,7 @@ D = M
 @5
 M = D
 // Command: call Class1.get 0
-@StaticsTest$ret3
+@StaticsTest$ret4
 D = A
 @SP
 AM = M + 1
@@ -598,9 +641,9 @@ D = M
 M = D
 @Class1.get
 0; JMP
-(StaticsTest$ret3)
+(StaticsTest$ret4)
 // Command: call Class2.get 0
-@StaticsTest$ret4
+@StaticsTest$ret5
 D = A
 @SP
 AM = M + 1
@@ -644,7 +687,7 @@ D = M
 M = D
 @Class2.get
 0; JMP
-(StaticsTest$ret4)
+(StaticsTest$ret5)
 // Command: label WHILE
 (WHILE)
 // Command: goto WHILE
