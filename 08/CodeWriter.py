@@ -15,6 +15,8 @@ class CodeWriter:
         self.file = open(file, "a")
         self.labelCounter = 1
         self.returnCounter = 1
+        self.staticCounter = 0
+        self.staticOffset = 0
 
     def writeInit(self):
         self.file.write(textwrap.dedent(f"""\
@@ -149,14 +151,16 @@ class CodeWriter:
                 M = D
                 """)
         elif (segment == "static"):
+            realIndex = str(int(index) + self.staticOffset)
             asmPushCommand = textwrap.dedent(f"""\
-                @{self.fileName}.{index}
+                @{self.fileName}.{realIndex}
                 D = M
                 @SP
                 AM = M + 1
                 A = A - 1
                 M = D
                 """)
+            self.staticCounter += 1
         elif (segment == "pointer"):
             if (index != "0" and index != "1"):
                 raise ValueError("Pointer index can only be 0 or 1.")

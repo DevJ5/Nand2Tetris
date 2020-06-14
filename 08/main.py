@@ -90,6 +90,9 @@ def main():
 
         # Close input file after translation has been done
         parser.closeInputFile()
+        # Increment static offset for the next file
+        codeWriter.staticOffset += codeWriter.staticCounter
+        codeWriter.staticCounter = 0
 
     # Close output file after all files are translated
     codeWriter.closeOutputFile()
