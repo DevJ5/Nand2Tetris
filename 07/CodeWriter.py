@@ -226,6 +226,24 @@ class CodeWriter:
         # Write the assembly pop command
         self.file.write(asmPopCommand)
 
+    def writeLabel(self, labelName):
+        self.file.write(f"({labelName})")
+
+    def writeGoto(self, labelName):
+        self.file.write(f"""\
+            @{labelName}
+            0; JMP
+            """)
+
+    def writeIf(self, labelName):
+        self.file.write(f"""\
+            @SP
+            AM = M - 1
+            D = M
+            @{labelName}
+            D; JNE
+            """)
+
     def getTempAddress(self, index):
         baseTempAddress = 5
         return str(baseTempAddress + int(index))

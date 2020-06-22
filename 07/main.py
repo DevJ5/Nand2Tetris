@@ -47,6 +47,15 @@ def main():
             segment = parser.getArg1()
             index = parser.getArg2()
             codeWriter.writePop(parser.getCommandSubtype(), segment, index)
+        elif (commandType == parser.C_LABEL):
+            labelName = parser.getArg1()
+            codeWriter.writeLabel()  # TODO: implement this writeLabel
+        elif (commandType == parser.C_GOTO):
+            labelName = parser.getArg1()
+            codeWriter.writeGoto()  # TODO: implement this writeGoto
+        elif (commandType == parser.C_IF):
+            labelName = parser.getArg1()
+            codeWriter.writeIf()  # TODO: implement this writeIf
         else:
             pass
 

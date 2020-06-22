@@ -45,7 +45,6 @@ class VMParser:
             self.commandType = self.C_GOTO
         elif (self.currentCommand.startswith("if-goto")):
             self.commandType = self.C_IF
-        # TODO: rest of the function commands
         elif (self.currentCommand.startswith("function")):
             self.commandType = self.C_FUNCTION
         elif (self.currentCommand.startswith("return")):
