@@ -1,3 +1,3 @@
 # Nand2Tetris
 
-Currently on Week 9.
+Week 8 finished.
